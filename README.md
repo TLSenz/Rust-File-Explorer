@@ -11,7 +11,7 @@ This project is a file explorer built with Rust and powered by Tauri. Currently,
 - **Search Files:** Search for files on your disk (note: the search is currently disk-based and may not be as fast as desired).
 
 ### Performance:
-The search functionality is currently slower compared to the Windows File Explorer when searching the entire disk. Improvements are planned for future releases to enhance search speed and efficiency.
+The search functionality is currently a bit faster compared to the Windows File Explorer when searching the entire disk. Improvements are planned for future releases to enhance search speed and efficiency. Another Problem right now is that right now that you have to type the intire file name with the file type to get the Result
 
 ### Tech Stack:
 - **Backend:** Rust
