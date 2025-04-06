@@ -1,7 +1,3 @@
-Here's an improved version of your README:
-
----
-
 # File Explorer in Rust
 
 This project is a file explorer built with Rust and powered by Tauri. Currently, it allows users to browse through files and folders, and perform basic file searches. 
@@ -47,4 +43,3 @@ This project is open-source, and contributions are welcome!
 
 ---
 
-This version makes the text more concise and structured, highlighting important information such as features, performance, tech stack, and how others can contribute.
