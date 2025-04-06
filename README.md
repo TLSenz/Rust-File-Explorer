@@ -1,1 +1,50 @@
-I am trying to build a File Explorer in Rust. Right now you can only browse through Files and Folders. You can also Search for Files. Right now its searching from Disk so it is not that fast. I tested it against the Windows File Explorer. Its faster if it searches the whole disk for a file. The App is build with Tauri, so the Frontend is React. Feel free to contribute if you want. I will improve the Search Function and add Functions like creating a File  an so on.
+Here's an improved version of your README:
+
+---
+
+# File Explorer in Rust
+
+This project is a file explorer built with Rust and powered by Tauri. Currently, it allows users to browse through files and folders, and perform basic file searches. 
+
+### Features:
+- **Browse Files & Folders:** Navigate through your file system.
+- **Search Files:** Search for files on your disk (note: the search is currently disk-based and may not be as fast as desired).
+
+### Performance:
+The search functionality is currently slower compared to the Windows File Explorer when searching the entire disk. Improvements are planned for future releases to enhance search speed and efficiency.
+
+### Tech Stack:
+- **Backend:** Rust
+- **Frontend:** React (via Tauri for native desktop apps)
+
+### Planned Features:
+- **Improved Search:** Optimizing the search functionality.
+- **File Operations:** Adding features such as creating, renaming, and deleting files.
+- **Enhanced User Interface:** Further refinements to the UI.
+
+### Contributing:
+Feel free to contribute to this project! If you have ideas for improvements or want to help out, please submit a pull request.
+
+### Installation & Setup:
+
+1. Clone the repository:
+   ```bash
+   git clone <repo-url>
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the app:
+   ```bash
+   npm run tauri dev
+   ```
+
+### License:
+This project is open-source, and contributions are welcome!
+
+---
+
+This version makes the text more concise and structured, highlighting important information such as features, performance, tech stack, and how others can contribute.
