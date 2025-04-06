@@ -2,7 +2,9 @@ use sysinfo::{Disks};
 use walkdir::WalkDir;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
-use tauri::State;
+use tauri::{AppHandle, Emitter, State};
+use  std::thread;
+use std::sync::mpsc;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -63,29 +65,58 @@ fn get_directorys(parent_directory: &str, state: State<Arc<BackStack>>) -> Resul
 }
 
 #[tauri::command]
-fn file_search(filename:String, state: State<Arc<BackStack>>) -> (String, String, bool){
-    println!("Hello");
+fn file_search(filename:String, state: State<Arc<BackStack>>, app: AppHandle)
+{
+
+    let (tx,tr) = mpsc::channel();
     let mut history = state.history.lock().unwrap();
-    let mut  result:(String,String, bool) = ( "Not Found".parse().unwrap(), "Not Found".parse().unwrap(), false);
 
-    for entry in WalkDir::new(history.last().unwrap()) // Replace with your own logic for `history`
-        .into_iter()
-        .filter_map(Result::ok) // Filter out errors
-    {
-        println!("{}", entry.path().display());
-        // Access the file name
-        let file_name = entry.file_name().to_string_lossy(); // Convert OsString to String
+    let mut verlauf = history.to_vec();
+
+    thread::spawn(move || {
 
 
-        println!("{}", file_name);
-        // Compare the file name with 'filename'
-        if file_name == filename{
-            println!("Found file: {}", file_name);
-            result = (entry.path().to_string_lossy().parse().unwrap(), filename.clone(), true);
+        println!("Hello");
 
+
+        let mut  result:(String,String, bool) = ( "Not Found".parse().unwrap(), "Not Found".parse().unwrap(), false);
+
+
+        for entry in WalkDir::new(verlauf.last().unwrap()) // Replace with your own logic for `history`
+            .into_iter()
+            .filter_map(Result::ok) // Filter out errors
+        {
+            println!("{}", entry.path().display());
+            // Access the file name
+            let file_name = entry.file_name().to_string_lossy(); // Convert OsString to String
+
+
+            println!("{}", file_name);
+            // Compare the file name with 'filename'
+            if file_name.contains(&filename){
+                println!("Found file: {}", file_name);
+                result = (entry.path().to_string_lossy().parse().unwrap(), filename.clone(), true);
+                break
+
+            }
+        }
+        println!("filename: {}", &filename);
+        tx.send(result).expect("Something went wrong with the Returning of the Message ");
+
+    });
+
+    let  result = tr.recv().unwrap();
+
+    match app.emit("Search_is_Finished",  result){
+        Ok(result) => {
+            println!("Search_sucessfull");
+            println!("{:?}", result);
+        }
+        Err(e) => {
+            println!("Error {}", e)
         }
     }
-    println!("filename: {}", filename);
-    result
+
+
 
 }

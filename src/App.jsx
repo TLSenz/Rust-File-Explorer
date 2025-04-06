@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import { } from '@tauri-apps/api/event';
+import {app} from "@tauri-apps/api";
 
 function App() {
+
+
+
+
     const [greetMsg, setGreetMsg] = useState("");
     const [result, setResult] = useState(""); // Initialize result properly
     const [disk, setDisks] = useState([]);
@@ -12,10 +18,7 @@ function App() {
 
     async function search(filename) {
         console.log("Searching for:", filename);
-        const searchResult = await invoke("file_search", { filename });
-        setResult(searchResult);
-        console.log("Finished Searching");
-        console.log("Search result:", searchResult);
+        invoke("file_search", {filename});
     }
 
     async function getFileDisks() {
