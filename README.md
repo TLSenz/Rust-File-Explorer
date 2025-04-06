@@ -28,12 +28,17 @@ Feel free to contribute to this project! If you have ideas for improvements or w
    git clone <repo-url>
    ```
 
-2. Install dependencies:
+2. Change into Project Folder:
+```bash
+cd Rust-File-Explorer
+```
+
+3. Install dependencies:
    ```bash
    npm install
    ```
 
-3. Start the app:
+4. Start the app:
    ```bash
    npm run tauri dev
    ```
