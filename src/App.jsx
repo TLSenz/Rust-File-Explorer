@@ -13,8 +13,8 @@ listen('Search_is_Finished', (event) => {
 })
 
 
-    const [greetMsg, setGreetMsg] = useState("");
-    const [result, setResult] = useState(""); // Initialize result properly
+    const [popUpOpen, setOpen] = useState(false);
+    const [file, setFile] = useState('')
     const [disk, setDisks] = useState([]);
     const [dir, setDir] = useState([]);
     const [verlauf, addVerlauf] = useState(["C:\\"]);
@@ -70,6 +70,17 @@ listen('Search_is_Finished', (event) => {
         search(input);
     };
 
+    const handleFile = async (e) => {
+        e.preventDefault()
+        setOpen(false)
+
+
+    }
+    const handleOverlay = () => {
+        setOpen(true)
+    }
+
+
     return (
         <div>
             <h1>Disks</h1>
@@ -84,9 +95,32 @@ listen('Search_is_Finished', (event) => {
                     onChange={(e) => setInput(e.target.value)} // Fix missing input handler
                 />
                 <button type="submit">Search</button>
+                <button type="submit" onClick={handleOverlay}>Create File</button>
+
             </form>
 
-            {result && <p>{result}</p>}
+
+
+
+            {
+                popUpOpen &&(
+                    <div>
+                        <h3>Create New File</h3>
+
+                        <form onSubmit={handleFile}>
+                            <input
+                                type="text"
+                                value={file} // Verknüpft den Wert des Eingabefelds mit dem State
+                                onChange={(e) => setFile(e.target.value)} // Setzt den State mit dem Wert des Eingabefelds
+                                placeholder="Enter file name"
+                            />
+                            <button type="submit">Create File</button>
+                        </form>
+                    </div>
+                )
+            }
+
+
 
             <button onClick={goBack}>Back</button>
             <h3>Current Directory: {verlauf[verlauf.length - 1]}</h3>
