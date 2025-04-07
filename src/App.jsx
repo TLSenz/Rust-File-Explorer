@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import styles from "./overlay.module.css"
 import { } from '@tauri-apps/api/event';
 import {app} from "@tauri-apps/api";
 import {listen} from "@tauri-apps/api/event";
+
+
 
 function App() {
 
@@ -13,12 +16,16 @@ listen('Search_is_Finished', (event) => {
 })
 
 
-    const [greetMsg, setGreetMsg] = useState("");
-    const [result, setResult] = useState(""); // Initialize result properly
+    const [popUpOpen, setOpen] = useState(false);
+    const [file, setFile] = useState('')
     const [disk, setDisks] = useState([]);
     const [dir, setDir] = useState([]);
     const [verlauf, addVerlauf] = useState(["C:\\"]);
     const [input, setInput] = useState(""); // Add missing input state
+
+    function createFile(filename){
+        invoke("create_file",{filename, currentPath : verlauf[verlauf.length - 1]})
+    }
 
     async function search(filename) {
         console.log("Searching for:", filename);
@@ -70,6 +77,19 @@ listen('Search_is_Finished', (event) => {
         search(input);
     };
 
+    const handleFile = async (e) => {
+        console.log(file);
+        e.preventDefault()
+        setOpen(false)
+        createFile(file)
+
+
+    }
+    const handleOverlay = () => {
+        setOpen(true);
+    }
+
+
     return (
         <div>
             <h1>Disks</h1>
@@ -81,12 +101,33 @@ listen('Search_is_Finished', (event) => {
                 <input
                     type="text"
                     value={input}
-                    onChange={(e) => setInput(e.target.value)} // Fix missing input handler
+                    onChange={(e) => setInput(e.target.value)}
                 />
                 <button type="submit">Search</button>
-            </form>
 
-            {result && <p>{result}</p>}
+            </form>
+            <button onClick={handleOverlay}>Create File</button>
+
+            {/* Conditionally render the popup */}
+            {popUpOpen && (
+                <div className={styles.overlay}>
+                    <h3>Create New File</h3>
+                    <form onSubmit={handleFile}>
+                        <input
+                            type="text"
+                            value={file}
+                            onChange={(e) => setFile(e.target.value)}
+                            placeholder="Enter file name"
+                        />
+                        <button type="submit" >
+                            Create File
+                        </button>
+                    </form>
+                </div>
+            )
+            }
+
+
 
             <button onClick={goBack}>Back</button>
             <h3>Current Directory: {verlauf[verlauf.length - 1]}</h3>

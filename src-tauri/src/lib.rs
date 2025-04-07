@@ -1,3 +1,4 @@
+use std::fs::File;
 use sysinfo::{Disks};
 use walkdir::WalkDir;
 use std::path::Path;
@@ -5,6 +6,7 @@ use std::sync::{Arc, Mutex};
 use tauri::{AppHandle, Emitter, Manager, State};
 use  std::thread;
 use std::sync::mpsc;
+use regex::Regex;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -26,7 +28,7 @@ pub fn run() {
             history: Mutex::new(Vec::new()),
         }))
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, get_partition_of_disk, get_directorys, file_search])
+        .invoke_handler(tauri::generate_handler![greet, get_partition_of_disk, get_directorys, file_search, create_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -116,9 +118,28 @@ fn file_search(filename:String, state: State<Arc<BackStack>>, app: AppHandle)
 
     });
 
+}
 
 
 
+#[tauri::command]
+fn create_file(filename: String, current_path: String){
+
+        println!("Hello");
+    println!("{}", filename);
+    println!("{}", current_path);
+
+        thread::spawn(move || {
+
+            let  copied_filename = filename.clone();
+
+            let re = Regex::new(r"\.[^\.]+$").unwrap();
 
 
+            let path_now = format!("{}/{}", current_path, copied_filename);
+
+            File::create(path_now).expect("Could not create the File");
+
+
+        });
 }

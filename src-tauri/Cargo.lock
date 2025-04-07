@@ -2976,6 +2976,7 @@ dependencies = [
 name = "rustfileexplorer"
 version = "0.1.0"
 dependencies = [
+ "regex",
  "serde",
  "serde_json",
  "sysinfo",
