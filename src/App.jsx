@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import styles from "./overlay.module.css"
 import { } from '@tauri-apps/api/event';
 import {app} from "@tauri-apps/api";
 import {listen} from "@tauri-apps/api/event";
+
+
 
 function App() {
 
@@ -19,6 +22,10 @@ listen('Search_is_Finished', (event) => {
     const [dir, setDir] = useState([]);
     const [verlauf, addVerlauf] = useState(["C:\\"]);
     const [input, setInput] = useState(""); // Add missing input state
+
+    function createFile(filename){
+        invoke("create_file",{filename, currentPath : verlauf[verlauf.length - 1]})
+    }
 
     async function search(filename) {
         console.log("Searching for:", filename);
@@ -71,13 +78,15 @@ listen('Search_is_Finished', (event) => {
     };
 
     const handleFile = async (e) => {
+        console.log(file);
         e.preventDefault()
         setOpen(false)
+        createFile(file)
 
 
     }
     const handleOverlay = () => {
-        setOpen(true)
+        setOpen(true);
     }
 
 
@@ -92,32 +101,30 @@ listen('Search_is_Finished', (event) => {
                 <input
                     type="text"
                     value={input}
-                    onChange={(e) => setInput(e.target.value)} // Fix missing input handler
+                    onChange={(e) => setInput(e.target.value)}
                 />
                 <button type="submit">Search</button>
-                <button type="submit" onClick={handleOverlay}>Create File</button>
 
             </form>
+            <button onClick={handleOverlay}>Create File</button>
 
-
-
-
-            {
-                popUpOpen &&(
-                    <div>
-                        <h3>Create New File</h3>
-
-                        <form onSubmit={handleFile}>
-                            <input
-                                type="text"
-                                value={file} // Verknüpft den Wert des Eingabefelds mit dem State
-                                onChange={(e) => setFile(e.target.value)} // Setzt den State mit dem Wert des Eingabefelds
-                                placeholder="Enter file name"
-                            />
-                            <button type="submit">Create File</button>
-                        </form>
-                    </div>
-                )
+            {/* Conditionally render the popup */}
+            {popUpOpen && (
+                <div className={styles.overlay}>
+                    <h3>Create New File</h3>
+                    <form onSubmit={handleFile}>
+                        <input
+                            type="text"
+                            value={file}
+                            onChange={(e) => setFile(e.target.value)}
+                            placeholder="Enter file name"
+                        />
+                        <button type="submit" >
+                            Create File
+                        </button>
+                    </form>
+                </div>
+            )
             }
 
 

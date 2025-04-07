@@ -105,30 +105,6 @@ li{
 }
 
 
-/* Der Overlay-Container */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparenter Hintergrund */
-  z-index: 1000; /* Damit das Overlay über allem anderen liegt */
-  backdrop-filter: blur(10px); /* Unschärfe des Hintergrunds */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Optional: Stil für das Modal oder den Inhalt */
-.modal-content {
-  background: white; /* Weißer Hintergrund für das Modal */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-
 
 
 
