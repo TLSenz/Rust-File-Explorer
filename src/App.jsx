@@ -3,10 +3,14 @@ import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 import { } from '@tauri-apps/api/event';
 import {app} from "@tauri-apps/api";
+import {listen} from "@tauri-apps/api/event";
 
 function App() {
 
-
+listen('Search_is_Finished', (event) => {
+    console.log("Search Result" + event.payload);
+    setDir(event.payload)
+})
 
 
     const [greetMsg, setGreetMsg] = useState("");
@@ -35,15 +39,15 @@ function App() {
         getFileDisks();
         getDirs("C:\\"); // Load initial directories
 
-        const handleMouseDown = (event) => {
+        const handleMouseDown = async (event) => {
             if (event.button === 3) { // Right mouse button
                 console.log("Back button clicked");
-                goBack();
+                await goBack();
             }
         };
 
         document.addEventListener("mousedown", handleMouseDown);
-        return () => document.removeEventListener("mousedown", handleMouseDown);
+
     }, []);
 
     async function goBack() {

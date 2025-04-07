@@ -2,7 +2,7 @@ use sysinfo::{Disks};
 use walkdir::WalkDir;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
-use tauri::{AppHandle, Emitter, State};
+use tauri::{AppHandle, Emitter, Manager, State};
 use  std::thread;
 use std::sync::mpsc;
 
@@ -68,10 +68,11 @@ fn get_directorys(parent_directory: &str, state: State<Arc<BackStack>>) -> Resul
 fn file_search(filename:String, state: State<Arc<BackStack>>, app: AppHandle)
 {
 
-    let (tx,tr) = mpsc::channel();
+
     let mut history = state.history.lock().unwrap();
 
     let mut verlauf = history.to_vec();
+    let app_handle = app.clone();
 
     thread::spawn(move || {
 
@@ -101,21 +102,22 @@ fn file_search(filename:String, state: State<Arc<BackStack>>, app: AppHandle)
             }
         }
         println!("filename: {}", &filename);
-        tx.send(result).expect("Something went wrong with the Returning of the Message ");
+        match app_handle.emit("Search_is_Finished",  result){
+            Ok(result) => {
+                println!("Search_sucessfull");
+                println!("{:?}", result);
+            }
+            Err(e) => {
+                println!("Error {}", e)
+            }
+        }
+
+
 
     });
 
-    let  result = tr.recv().unwrap();
 
-    match app.emit("Search_is_Finished",  result){
-        Ok(result) => {
-            println!("Search_sucessfull");
-            println!("{:?}", result);
-        }
-        Err(e) => {
-            println!("Error {}", e)
-        }
-    }
+
 
 
 
