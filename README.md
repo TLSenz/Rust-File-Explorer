@@ -5,6 +5,8 @@ This project is a file explorer built with Rust and powered by Tauri. Currently,
 ### Features:
 - **Browse Files & Folders:** Navigate through your file system.
 - **Search Files:** Search for files on your disk (note: the search is currently disk-based and may not be as fast as desired).
+- **Create Files:** Create Files in the current Directory
+- **Open File** You can now open Files with a right click dropdown menu
 
 ### Performance:
 The search functionality is currently a bit faster compared to the Windows File Explorer when searching the entire disk. Improvements are planned for future releases to enhance search speed and efficiency. Another Problem right now is that right now that you have to type the intire file name with the file type to get the Result
@@ -15,7 +17,7 @@ The search functionality is currently a bit faster compared to the Windows File 
 
 ### Planned Features:
 - **Improved Search:** Optimizing the search functionality.
-- **File Operations:** Adding features such as creating, renaming, and deleting files.
+
 - **Enhanced User Interface:** Further refinements to the UI.
 
 ### Contributing:
