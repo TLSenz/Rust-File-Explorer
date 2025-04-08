@@ -28,7 +28,7 @@ pub fn run() {
             history: Mutex::new(Vec::new()),
         }))
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, get_partition_of_disk, get_directorys, file_search, create_file])
+        .invoke_handler(tauri::generate_handler![greet, get_partition_of_disk, get_directorys, file_search, create_file, open_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -119,9 +119,6 @@ fn file_search(filename:String, state: State<Arc<BackStack>>, app: AppHandle)
     });
 
 }
-
-
-
 #[tauri::command]
 fn create_file(filename: String, current_path: String){
 
@@ -142,4 +139,12 @@ fn create_file(filename: String, current_path: String){
 
 
         });
+}
+
+#[tauri::command]
+fn open_file(file_path: String){
+
+    opener::open(file_path).unwrap();
+
+
 }
